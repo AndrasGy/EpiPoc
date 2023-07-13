@@ -10,7 +10,7 @@ public class MassStrategy implements VehicleStrategy {
 
     public int calculateEcologyFactor(int numbersOfPassengers, int avarageSpeed, int distance) {
         double avarageSpeedDivider = avarageSpeed > 30 ? 0.9 : 0.7;
-        double passengerDivider = numbersOfPassengers>25 ? 1 : numbersOfPassengers / 25;
+        double passengerDivider = numbersOfPassengers > 25 ? 1 : numbersOfPassengers / 25;
 
         return (int) Math.ceil(100 * avarageSpeedDivider * passengerDivider);
     }

@@ -10,17 +10,18 @@ import java.util.Date;
 @Data
 public class TravelDTO {
 
-    Long id;
+    private Long id;
 
     @NotNull(message = "TravelType is mandatory")
-    TravelType travelType;
+    private TravelType travelType;
 
     @Positive
-    int numberOfPassengers;
+    private int numberOfPassengers;
     @Positive
-    int averageSpeed;
+    private int averageSpeed;
     @Positive
-    int distance;
-    Date travelDate;
+    private int distance;
+
+    private Date travelDate;
 
 }

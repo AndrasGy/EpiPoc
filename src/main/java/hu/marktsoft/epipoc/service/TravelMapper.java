@@ -1,11 +1,12 @@
 package hu.marktsoft.epipoc.service;
 
 import hu.marktsoft.epipoc.dto.TravelDTO;
-import hu.marktsoft.epipoc.model.Travel;
+import hu.marktsoft.epipoc.model.TravelEntity;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TravelMapper {
-    TravelDTO travelModelToDTO(Travel travel);
-    Travel travelDTOToModel(TravelDTO travelDTO);
+    TravelDTO travelModelToDTO(TravelEntity travel);
+
+    TravelEntity travelDTOToModel(TravelDTO travelDTO);
 }
