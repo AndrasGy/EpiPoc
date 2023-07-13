@@ -11,7 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,7 @@ class TravelServiceImpl implements TravelService {
         return travelRepository.findAll();
     }
 
-    public FactorDTO getAverageFactors(Date date) {
+    public FactorDTO getAverageFactors(LocalDate date) {
         FactorDTO avarageFactors = new FactorDTO();
         List<TravelEntity> travels = (date == null) ? travelRepository.findAll() : travelRepository.findByTravelDate(date);
 
@@ -51,7 +51,7 @@ class TravelServiceImpl implements TravelService {
         return avarageFactors;
     }
 
-    public String getEvaluation(Date date) {
+    public String getEvaluation(LocalDate date) {
         String evaluation = "";
         FactorDTO avarageFactors = getAverageFactors(date);
 

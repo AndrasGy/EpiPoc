@@ -14,10 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -27,25 +25,25 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TravelServiceTest {
 
-    @InjectMocks
-    TravelService travelService;
-
     @Mock
     TravelRepository travelRepository;
+    
+    @InjectMocks
+    TravelService travelService;
 
     TravelEntity carTravel;
     TravelEntity bicycleTravel;
     TravelEntity massTravel;
 
-    static final Date GREEN_DAY = Date.from(Instant.now());
-    static final Date GREY_DAY = Date.from(Instant.now().minus(1, ChronoUnit.DAYS));
+    static final LocalDate GREEN_DAY = LocalDate.now();
+    static final LocalDate GREY_DAY = LocalDate.now().minusDays(1);
 
     @BeforeEach
     public void init() {
 
         carTravel = new TravelEntity();
 
-        carTravel.setTravelType(TravelType.Car);
+        carTravel.setTravelType(TravelType.CAR);
         carTravel.setNumberOfPassengers(1);
         carTravel.setAverageSpeed(25);
         carTravel.setDistance(8);
@@ -55,7 +53,7 @@ class TravelServiceTest {
 
         bicycleTravel = new TravelEntity();
 
-        bicycleTravel.setTravelType(TravelType.Bicycle);
+        bicycleTravel.setTravelType(TravelType.BICYCLE);
         bicycleTravel.setNumberOfPassengers(1);
         bicycleTravel.setAverageSpeed(19);
         bicycleTravel.setDistance(11);
@@ -65,7 +63,7 @@ class TravelServiceTest {
 
         massTravel = new TravelEntity();
 
-        massTravel.setTravelType(TravelType.Mass);
+        massTravel.setTravelType(TravelType.MASS);
         massTravel.setNumberOfPassengers(32);
         massTravel.setAverageSpeed(35);
         massTravel.setDistance(10);

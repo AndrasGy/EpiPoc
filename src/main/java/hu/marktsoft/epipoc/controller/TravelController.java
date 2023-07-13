@@ -9,7 +9,7 @@ import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,12 +27,12 @@ public class TravelController {
     }
 
     @GetMapping("/evaluation")
-    public String getEvaluation(@RequestParam(value = "date", required = false) Date date) {
+    public String getEvaluation(@RequestParam(value = "date", required = false) LocalDate date) {
         return travelService.getEvaluation(date);
     }
 
     @GetMapping("/average")
-    public FactorDTO getAverageFactors(@RequestParam(value = "date", required = false) Date date) {
+    public FactorDTO getAverageFactors(@RequestParam(value = "date", required = false) LocalDate date) {
         return travelService.getAverageFactors(date);
     }
 

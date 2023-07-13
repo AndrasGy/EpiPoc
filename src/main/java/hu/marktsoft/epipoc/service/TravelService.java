@@ -3,7 +3,7 @@ package hu.marktsoft.epipoc.service;
 import hu.marktsoft.epipoc.dto.FactorDTO;
 import hu.marktsoft.epipoc.model.TravelEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TravelService {
@@ -14,9 +14,9 @@ public interface TravelService {
 
     List<TravelEntity> findAll();
 
-    FactorDTO getAverageFactors(Date date);
+    FactorDTO getAverageFactors(LocalDate date);
 
-    String getEvaluation(Date date);
+    String getEvaluation(LocalDate date);
 
     public void updateTravel(TravelEntity travel);
 }

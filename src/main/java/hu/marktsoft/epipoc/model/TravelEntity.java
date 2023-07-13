@@ -1,18 +1,17 @@
 package hu.marktsoft.epipoc.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class TravelEntity {
 
     @Id
@@ -20,27 +19,40 @@ public class TravelEntity {
     private Long id;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private TravelType travelType;
 
-    private int numberOfPassengers;
-    private int averageSpeed;
-    private int distance;
+    private Integer numberOfPassengers;
+    private Integer averageSpeed;
+    private Integer distance;
 
-    private Date travelDate;
-
-    @Min(0)
-    @Max(100)
-    private int comfortFactor;
+    private LocalDate travelDate;
 
     @Min(0)
     @Max(100)
-    private int ecologyFactor;
+    private Integer comfortFactor;
 
     @Min(0)
     @Max(100)
-    private int healthFactor;
+    private Integer ecologyFactor;
+
+    @Min(0)
+    @Max(100)
+    private Integer healthFactor;
 
     @Version
     private Integer version;
 
+    @Override
+    public int hashCode() {
+        return id.intValue() * 12345;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        return ((TravelEntity) obj).getId().equals(this.getId());
+    }
 }

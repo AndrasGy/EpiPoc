@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class TravelDTO {
@@ -22,6 +22,6 @@ public class TravelDTO {
     @Positive
     private int distance;
 
-    private Date travelDate;
+    private LocalDate travelDate;
 
 }

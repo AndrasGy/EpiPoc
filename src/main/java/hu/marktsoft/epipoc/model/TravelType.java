@@ -6,17 +6,17 @@ import hu.marktsoft.epipoc.service.strategy.MassStrategy;
 import hu.marktsoft.epipoc.service.strategy.VehicleStrategy;
 
 public enum TravelType {
-    Car,
-    Bicycle,
-    Mass;
+    CAR,
+    BICYCLE,
+    MASS;
 
     public VehicleStrategy getStrategy() {
         switch (this) {
-            case Car:
+            case CAR:
                 return new CarStrategy();
-            case Bicycle:
+            case BICYCLE:
                 return new BicycleStrategy();
-            case Mass:
+            case MASS:
                 return new MassStrategy();
             default:
                 return null;
