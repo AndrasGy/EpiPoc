@@ -1,0 +1,10 @@
+2023-07-13 9:43
+========================================================================================================================
+1.) Vannak a java forrásokban unused importok. Nulla darab warningra törekedjünk. Forrásfájlok végső formázása mindig az IDEA formatterrel történjen. Rá kell szokni, hogy az ember állandóan nyomkodja az "optimize imports" és a "reformat" shortcut-jait. Pl ez csúnya: "public void calculateFactors( Travel travel){" mert a szóközök össze-vissza vannak elhelyezve.
+2.) A Mappert ha így annotáljuk @Mapper(componentModel = "spring"), akkor egy szabványos spring Component lesz belőle, amit be lehet injektálni
+3.) Dependency injection ne @Autowire-rel legyen, hanem @RequiredArgsConstructor + private final, pl. TravelController
+4.) Travel => TravelEntity. Az Entity-k kérlek legyenek egy külön package-ban, ne a model-ben
+5.) Service-eknek mindig legyen egy külön Interface-e és Impl osztálya. Az Impl ne legyen "public class", hogy véletlenül se lehessen valahová importálni.
+6.) properties fájl yaml formátumban legyen
+7.) Minden osztályban a változók legyenek private-ok, pl. FaktorDTO, TravelDTO
+

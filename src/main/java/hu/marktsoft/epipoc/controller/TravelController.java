@@ -2,14 +2,11 @@ package hu.marktsoft.epipoc.controller;
 
 import hu.marktsoft.epipoc.dto.FactorDTO;
 import hu.marktsoft.epipoc.dto.TravelDTO;
-import hu.marktsoft.epipoc.model.Travel;
 import hu.marktsoft.epipoc.service.TravelMapper;
-import hu.marktsoft.epipoc.service.TravelMapperImpl;
 import hu.marktsoft.epipoc.service.TravelService;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
-import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -18,11 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/travel")
+@RequiredArgsConstructor
 public class TravelController {
 
-    @Autowired
-    TravelService travelService;
-    private TravelMapper travelMapper = Mappers.getMapper(TravelMapper.class);
+    private final TravelService travelService;
+    private final TravelMapper travelMapper;
 
     @GetMapping
     public List<TravelDTO> findAll() {
@@ -40,7 +37,7 @@ public class TravelController {
     }
 
     @PostMapping
-    public void addTravel(@Valid @RequestBody TravelDTO travel){
+    public void addTravel(@Valid @RequestBody TravelDTO travel) {
         travelService.addTravel(travelMapper.travelDTOToModel(travel));
     }
 
