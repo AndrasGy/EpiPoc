@@ -1,0 +1,24 @@
+2023-07-13 9:43
+========================================================================================================================
+1.) Vannak a java forrásokban unused importok. Nulla darab warningra törekedjünk. Forrásfájlok végső formázása mindig az IDEA formatterrel történjen. Rá kell szokni, hogy az ember állandóan nyomkodja az "optimize imports" és a "reformat" shortcut-jait. Pl ez csúnya: "public void calculateFactors( Travel travel){" mert a szóközök össze-vissza vannak elhelyezve.
+2.) A Mappert ha így annotáljuk @Mapper(componentModel = "spring"), akkor egy szabványos spring Component lesz belőle, amit be lehet injektálni
+3.) Dependency injection ne @Autowire-rel legyen, hanem @RequiredArgsConstructor + private final, pl. TravelController
+4.) Travel => TravelEntity. Az Entity-k kérlek legyenek egy külön package-ban, ne a model-ben
+5.) Service-eknek mindig legyen egy külön Interface-e és Impl osztálya. Az Impl ne legyen "public class", hogy véletlenül se lehessen valahová importálni.
+6.) properties fájl yaml formátumban legyen
+7.) Minden osztályban a változók legyenek private-ok, pl. FaktorDTO, TravelDTO
+
+2023-07-13 11:32
+========================================================================================================================
+1.) Entity-ben ne használjunk primitív típusokat, mert ha NULL a mező, akkor NPE keletkezik. Ezt is kérlek nézd majd át, ami az NPE-k elkerüléséről szól: https://github.com/nagypet/articles/wiki/Avoiding-NullPointerException. Ugyanezért ezekben a metódusokban "hu.marktsoft.epipoc.service.strategy.VehicleStrategy.calculateComfortFactor" is az inputok ne primitív típusok legyenek.
+2.) Date régi típus, ne használjuk. Helyette LocalDate, LocalDateTime, ZonedDateTime
+3.) Entity-nél nem jó a @Data annotáció, mert ebben van hashCode() és equals(), ami ide nem jó. Kézzel kell megvalósítani ezeket metódusokat, amelyek csak a PK-t vizsgálják.
+4.) Enum (TravelType) elemei nagybetűkkel írandóak
+5.) Amikor enum van egy Entity-ben, akkor érdemes az @Enumerated annotációt használni, amely egyértelműen definiálja, hogy a string reprezentációt tároljuk, vagy az ordinalt.
+
+
+2023-07-13 14:54
+========================================================================================================================
+1.) NPE: hu.marktsoft.epipoc.service.TravelServiceImpl.calculateFactors
+2.) TravelServiceImpl-ben hiányzik az @Override annotáció
+3.)

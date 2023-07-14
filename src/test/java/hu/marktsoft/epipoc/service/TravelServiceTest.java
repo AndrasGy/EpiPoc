@@ -1,34 +1,30 @@
-package hu.marktsoft.epipoc;
+package hu.marktsoft.epipoc.service;
 
 import hu.marktsoft.epipoc.config.Constants;
 import hu.marktsoft.epipoc.dto.FactorDTO;
 import hu.marktsoft.epipoc.model.TravelEntity;
 import hu.marktsoft.epipoc.model.TravelType;
 import hu.marktsoft.epipoc.repository.TravelRepository;
-import hu.marktsoft.epipoc.service.TravelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class TravelServiceTest {
 
     @Mock
     TravelRepository travelRepository;
-    
-    @InjectMocks
+
     TravelService travelService;
 
     TravelEntity carTravel;
@@ -40,6 +36,8 @@ class TravelServiceTest {
 
     @BeforeEach
     public void init() {
+
+        travelService = new TravelServiceImpl(travelRepository, new TravelMapperImpl());
 
         carTravel = new TravelEntity();
 
@@ -71,6 +69,11 @@ class TravelServiceTest {
 
         travelService.calculateFactors(massTravel);
 
+    }
+
+    @Test
+    void testAddTravelWithNull() {
+        assertThatThrownBy(() -> travelService.addTravel(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test

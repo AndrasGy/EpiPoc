@@ -5,14 +5,13 @@ import hu.marktsoft.epipoc.dto.FactorDTO;
 import hu.marktsoft.epipoc.model.TravelEntity;
 import hu.marktsoft.epipoc.repository.TravelRepository;
 import hu.marktsoft.epipoc.service.strategy.VehicleStrategy;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,22 +19,28 @@ import java.util.stream.Collectors;
 class TravelServiceImpl implements TravelService {
 
     private final TravelRepository travelRepository;
-    private final EntityManager entityManager;
+    private final TravelMapper travelMapper;
 
+    @Override
     public void addTravel(TravelEntity travel) {
+        Objects.requireNonNull(travel);
+
         calculateFactors(travel);
 
         travelRepository.save(travel);
     }
 
-    public void calculateFactors(TravelEntity travel) {
-        VehicleStrategy strategy = travel.getTravelType().getStrategy();
+    @Override
+    public void calculateFactors(TravelEntity travelEntity) {
+        VehicleStrategy strategy = travelEntity.getTravelType().getStrategy();
 
-        travel.setComfortFactor(strategy.calculateComfortFactor(travel.getNumberOfPassengers(), travel.getAverageSpeed(), travel.getDistance()));
-        travel.setEcologyFactor(strategy.calculateEcologyFactor(travel.getNumberOfPassengers(), travel.getAverageSpeed(), travel.getDistance()));
-        travel.setHealthFactor(strategy.calculateHealthFactor(travel.getNumberOfPassengers(), travel.getAverageSpeed(), travel.getDistance()));
+        // TODO: NPE veszély paraméterátadásnál!
+        travelEntity.setComfortFactor(strategy.calculateComfortFactor(travelEntity.getNumberOfPassengers(), travelEntity.getAverageSpeed(), travelEntity.getDistance()));
+        travelEntity.setEcologyFactor(strategy.calculateEcologyFactor(travelEntity.getNumberOfPassengers(), travelEntity.getAverageSpeed(), travelEntity.getDistance()));
+        travelEntity.setHealthFactor(strategy.calculateHealthFactor(travelEntity.getNumberOfPassengers(), travelEntity.getAverageSpeed(), travelEntity.getDistance()));
     }
 
+    @Override
     public List<TravelEntity> findAll() {
         return travelRepository.findAll();
     }
@@ -51,39 +56,49 @@ class TravelServiceImpl implements TravelService {
         return avarageFactors;
     }
 
+    @Override
     public String getEvaluation(LocalDate date) {
         String evaluation = "";
         FactorDTO avarageFactors = getAverageFactors(date);
 
-        if (avarageFactors.getComfortFactor() >= Constants.GREAT_LIMIT) evaluation += Constants.GREAT_COMFORT;
-        else if (avarageFactors.getComfortFactor() >= Constants.AVERAGE_LIMIT) evaluation += Constants.AVERAGE_COMFORT;
-        else evaluation += Constants.WEAK_COMFORT;
+        if (avarageFactors.getComfortFactor() >= Constants.GREAT_LIMIT) {
+            evaluation += Constants.GREAT_COMFORT;
+        }
+        else if (avarageFactors.getComfortFactor() >= Constants.AVERAGE_LIMIT) {
+            evaluation += Constants.AVERAGE_COMFORT;
+        }
+        else {
+            evaluation += Constants.WEAK_COMFORT;
+        }
 
-        if (avarageFactors.getEcologyFactor() >= Constants.GREAT_LIMIT) evaluation += Constants.GREAT_ECOLOGY;
-        else if (avarageFactors.getEcologyFactor() >= Constants.AVERAGE_LIMIT) evaluation += Constants.AVERAGE_ECOLOGY;
-        else evaluation += Constants.WEAK_ECOLOGY;
+        if (avarageFactors.getEcologyFactor() >= Constants.GREAT_LIMIT) {
+            evaluation += Constants.GREAT_ECOLOGY;
+        }
+        else if (avarageFactors.getEcologyFactor() >= Constants.AVERAGE_LIMIT) {
+            evaluation += Constants.AVERAGE_ECOLOGY;
+        }
+        else {
+            evaluation += Constants.WEAK_ECOLOGY;
+        }
 
-        if (avarageFactors.getHealthFactor() >= Constants.GREAT_LIMIT) evaluation += Constants.GREAT_HEALTH;
-        else if (avarageFactors.getHealthFactor() >= Constants.AVERAGE_LIMIT) evaluation += Constants.AVERAGE_HEALTH;
-        else evaluation += Constants.WEAK_HEALTH;
+        if (avarageFactors.getHealthFactor() >= Constants.GREAT_LIMIT) {
+            evaluation += Constants.GREAT_HEALTH;
+        }
+        else if (avarageFactors.getHealthFactor() >= Constants.AVERAGE_LIMIT) {
+            evaluation += Constants.AVERAGE_HEALTH;
+        }
+        else {
+            evaluation += Constants.WEAK_HEALTH;
+        }
 
         return evaluation;
     }
 
     @Transactional
-    public void updateTravel(TravelEntity travel) {
-        TravelEntity oldTravel = travelRepository.getReferenceById(travel.getId());
-        entityManager.lock(oldTravel, LockModeType.OPTIMISTIC);
-
-        oldTravel.setTravelDate(travel.getTravelDate());
-        oldTravel.setTravelType(travel.getTravelType());
-        oldTravel.setDistance(travel.getDistance());
-        oldTravel.setAverageSpeed(travel.getAverageSpeed());
-        oldTravel.setNumberOfPassengers(travel.getNumberOfPassengers());
-
-
+    @Override
+    public void updateTravel(TravelEntity travelEntity) {
+        TravelEntity oldTravel = travelRepository.getReferenceById(travelEntity.getId());
+        travelMapper.update(travelEntity, oldTravel);
         travelRepository.save(oldTravel);
-
-        entityManager.lock(oldTravel, LockModeType.NONE);
     }
 }

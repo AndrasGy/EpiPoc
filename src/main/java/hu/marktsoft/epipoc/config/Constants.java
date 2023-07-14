@@ -1,5 +1,9 @@
 package hu.marktsoft.epipoc.config;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class Constants {
     public static final String GREAT_COMFORT = "GREAT_COMFORT\n";
     public static final String AVERAGE_COMFORT = "AVERAGE_COMFORT\n";

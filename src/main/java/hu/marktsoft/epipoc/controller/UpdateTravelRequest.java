@@ -1,4 +1,4 @@
-package hu.marktsoft.epipoc.dto;
+package hu.marktsoft.epipoc.controller;
 
 import hu.marktsoft.epipoc.model.TravelType;
 import lombok.Data;
@@ -6,9 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class TravelDTO {
-
-    private Long id;
+public class UpdateTravelRequest {
     private TravelType travelType;
     private int numberOfPassengers;
     private int averageSpeed;
